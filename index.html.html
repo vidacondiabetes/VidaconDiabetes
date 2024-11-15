@@ -1,0 +1,929 @@
+<html><head><base href="https://example.com">
+<meta charset="UTF-8">
+<title>Vida con Diabetes</title>
+<style>
+:root {
+  --primary: #1565C0; /* Deeper blue */
+  --accent: #1E88E5; /* Brighter blue */
+  --background: #ffffff;
+  --text: #333333;
+  --card-bg: #ffffff;
+  --info-banner: #E3F2FD; /* Light blue background */
+}
+
+/* Update dark mode info-banner color */
+[data-theme="dark"] {
+  --background: #1a1a1a;
+  --text: #ffffff;
+  --card-bg: #2d2d2d;
+  --info-banner: #0D47A1; /* Darker blue for dark mode */
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--background);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero-image {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  padding: 4rem 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff20' fill-opacity='0.2' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: cover;
+  opacity: 0.1;
+}
+
+.hero-image h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero-image p {
+  font-size: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+.glucose-meter {
+  width: 200px;
+  height: 200px;
+  margin: 2rem auto;
+}
+
+.glucose-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.cta-button {
+  background: var(--primary);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #0D47A1; /* Darker blue on hover */
+}
+
+.emergency-section {
+  background-color: #fff3f3;
+  border-left: 4px solid var(--accent);
+  padding: 1rem;
+  margin: 2rem 0;
+}
+
+.recipe-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.recipe-card img {
+  max-width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:hover img {
+  transform: scale(1.05);
+}
+
+.progress-tracker {
+  background: linear-gradient(145deg, var(--card-bg), var(--background));
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  height: 20px;
+  background: linear-gradient(90deg, #1565C0 0%, #1E88E5 100%);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.gallery-item {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+.theme-switch-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 26px;
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider svg {
+  position: absolute;
+  top: 5px;
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  transition: opacity 0.2s ease;
+}
+
+.slider .sun {
+  left: 5px;
+  opacity: 1;
+}
+
+.slider .moon {
+  right: 5px;
+  opacity: 0;
+}
+
+input:checked + .slider .sun {
+  opacity: 0;
+}
+
+input:checked + .slider .moon {
+  opacity: 1;
+}
+
+section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h2 {
+  font-size: 2.2rem;
+  margin: 2.5rem 0 1.5rem;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.info-banner {
+  background: var(--info-banner);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.contact {
+  margin: 4rem 0;
+}
+
+.contact .card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.contact a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.contact a:hover {
+  color: var(--accent);
+}
+
+.social-media {
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-5px);
+}
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+</style>
+</head>
+<body>
+
+<div class="hero-image">
+  <div>
+    <h1>Vida con Diabetes</h1>
+    <p>Una guía para una vida plena y saludable</p>
+  </div>
+</div>
+
+<div class="theme-switch-wrapper">
+  <label class="theme-switch" for="checkbox">
+    <input type="checkbox" id="checkbox" />
+    <div class="slider round">
+      <svg class="sun" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/>
+        <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"/>
+      </svg>
+      <svg class="moon" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </div>
+  </label>
+</div>
+
+<div class="container">
+  <section class="intro">
+    <h2>¿Qué es la Diabetes?</h2>
+    <div class="card">
+      <svg class="glucose-meter glucose-animation" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#4a90e2" stroke-width="5"/>
+        <path d="M50 10 V 90" stroke="#e27474" stroke-width="5"/>
+        <circle cx="50" cy="50" r="5" fill="#e27474"/>
+      </svg>
+      <p>La diabetes es una condición crónica que afecta la forma en que tu cuerpo procesa la glucosa. Aunque representa desafíos, con el manejo adecuado puedes llevar una vida plena y activa.</p>
+    </div>
+  </section>
+
+  <section class="diabetes-types">
+    <h2>Tipos de Diabetes</h2>
+    
+    <div class="tips-grid">
+      <div class="card">
+        <h3>Diabetes Tipo 1</h3>
+        <p>El cuerpo no produce insulina</p>
+        <h4>Causas:</h4>
+        <ul>
+          <li>Reacción autoinmune</li>
+          <li>Factores genéticos</li>
+          <li>Factores ambientales</li>
+        </ul>
+        <h4>Síntomas:</h4>
+        <ul>
+          <li>Sed excesiva</li>
+          <li>Hambre constante</li>
+          <li>Pérdida de peso inexplicable</li>
+          <li>Fatiga extrema</li>
+          <li>Visión borrosa</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Diabetes Tipo 2</h3>
+        <p>El cuerpo no usa la insulina adecuadamente</p>
+        <h4>Causas:</h4>
+        <ul>
+          <li>Sobrepeso y obesidad</li>
+          <li>Inactividad física</li>
+          <li>Predisposición genética</li>
+          <li>Edad avanzada</li>
+        </ul>
+        <h4>Síntomas:</h4>
+        <ul>
+          <li>Aumento de sed y hambre</li>
+          <li>Micción frecuente</li>
+          <li>Fatiga</li>
+          <li>Heridas que sanan lentamente</li>
+          <li>Infecciones frecuentes</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Diabetes Gestacional</h3>
+        <p>Ocurre durante el embarazo</p>
+        <h4>Causas:</h4>
+        <ul>
+          <li>Cambios hormonales durante el embarazo</li>
+          <li>Antecedentes familiares</li>
+          <li>Sobrepeso</li>
+        </ul>
+        <h4>Síntomas:</h4>
+        <ul>
+          <li>Generalmente asintomática</li>
+          <li>Se detecta en pruebas prenatales</li>
+          <li>Puede incluir sed y micción aumentada</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card info-banner">
+      <h3>Factores de Riesgo Comunes</h3>
+      <ul>
+        <li>Historia familiar de diabetes</li>
+        <li>Sobrepeso u obesidad</li>
+        <li>Sedentarismo</li>
+        <li>Edad (mayor riesgo después de los 45)</li>
+        <li>Presión arterial alta</li>
+        <li>Colesterol elevado</li>
+        <li>Antecedentes de diabetes gestacional</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="complications">
+    <h2>Complicaciones de la Diabetes</h2>
+    <div class="tips-grid">
+      <div class="card">
+        <h3>Complicaciones Agudas</h3>
+        <ul>
+          <li>Hipoglucemia severa</li>
+          <li>Cetoacidosis diabética</li>
+          <li>Estado hiperosmolar hiperglucémico</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Complicaciones Crónicas</h3>
+        <ul>
+          <li>Enfermedades cardiovasculares</li>
+          <li>Nefropatía (daño renal)</li>
+          <li>Retinopatía (problemas visuales)</li>
+          <li>Neuropatía (daño nervioso)</li>
+          <li>Problemas de cicatrización</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="diagnosis">
+    <h2>Diagnóstico</h2>
+    <div class="card">
+      <h3>Pruebas de Diagnóstico</h3>
+      <ul>
+        <li>Glucosa en ayunas (FPG)
+          <ul><li>Normal: < 100 mg/dL</li>
+              <li>Prediabetes: 100-125 mg/dL</li>
+              <li>Diabetes: ≥ 126 mg/dL</li>
+          </ul>
+        </li>
+        <li>Prueba de tolerancia a la glucosa (OGTT)
+          <ul><li>Normal: < 140 mg/dL</li>
+              <li>Prediabetes: 140-199 mg/dL</li>
+              <li>Diabetes: ≥ 200 mg/dL</li>
+          </ul>
+        </li>
+        <li>Hemoglobina A1C
+          <ul><li>Normal: < 5.7%</li>
+              <li>Prediabetes: 5.7-6.4%</li>
+              <li>Diabetes: ≥ 6.5%</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="treatment">
+    <h2>Tratamiento</h2>
+    <div class="tips-grid">
+      <div class="card">
+        <h3>Medicamentos</h3>
+        <ul>
+          <li>Insulina</li>
+          <li>Metformina</li>
+          <li>Sulfonilureas</li>
+          <li>Inhibidores DPP-4</li>
+          <li>Análogos GLP-1</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Cambios en el Estilo de Vida</h3>
+        <ul>
+          <li>Plan de alimentación personalizado</li>
+          <li>Ejercicio regular</li>
+          <li>Control de peso</li>
+          <li>Monitoreo de glucosa</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="education">
+    <h2>Educación Diabetológica</h2>
+    <div class="tips-grid">
+      <div class="card">
+        <h3>Autocontrol</h3>
+        <ul>
+          <li>Técnicas de medición de glucosa</li>
+          <li>Administración de medicamentos</li>
+          <li>Reconocimiento de síntomas</li>
+          <li>Cuidado de pies</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Habilidades Prácticas</h3>
+        <ul>
+          <li>Conteo de carbohidratos</li>
+          <li>Ajuste de dosis de insulina</li>
+          <li>Manejo de situaciones especiales</li>
+          <li>Prevención de complicaciones</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="image-gallery">
+    <div class="gallery-item">
+      <img alt="Plato saludable con vegetales, pollo a la plancha y quinoa, estilo fotografía culinaria profesional" 
+           src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" 
+           width="400" height="300">
+    </div>
+    <div class="gallery-item">
+      <img alt="Persona haciendo ejercicio al aire libre en un parque, fotografía lifestyle" 
+           src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c" 
+           width="400" height="300">
+    </div>
+    <div class="gallery-item">
+      <img alt="Kit moderno de medición de glucosa con glucómetro y tiras reactivas" 
+           src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae" 
+           width="400" height="300">
+    </div>
+    <div class="gallery-item">
+      <img alt="Frutas y verduras frescas organizadas en una mesa, fotografía cenital" 
+           src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea" 
+           width="400" height="300">
+    </div>
+    <div class="gallery-item">
+      <img alt="Persona midiendo su nivel de glucosa en casa, estilo documental" 
+           src="https://images.unsplash.com/photo-1579684385127-1ef15d508118" 
+           width="400" height="300">
+    </div>
+    <div class="gallery-item">
+      <img alt="Preparación de comida saludable con granos integrales y vegetales" 
+           src="https://images.unsplash.com/photo-1498837167922-ddd27525d352" 
+           width="400" height="300">
+    </div>
+  </section>
+
+  <section class="info-banner">
+    <h2>Nuevos Avances en el Control de la Diabetes</h2>
+    <p>Descubre las últimas tecnologías y tratamientos disponibles para mejorar tu calidad de vida:</p>
+    <ul>
+      <li>Monitores continuos de glucosa</li>
+      <li>Bombas de insulina inteligentes</li>
+      <li>Aplicaciones móviles de seguimiento</li>
+      <li>Nuevos medicamentos con menos efectos secundarios</li>
+    </ul>
+  </section>
+
+  <section class="tips-grid">
+    <div class="card">
+      <h3>Control de Glucosa</h3>
+      <p>Mantén un registro diario de tus niveles de glucosa y aprende a interpretar los resultados.</p>
+    </div>
+
+    <div class="card">
+      <h3>Alimentación Saludable</h3>
+      <p>Descubre cómo mantener una dieta equilibrada que te ayude a controlar tus niveles de azúcar.</p>
+    </div>
+
+    <div class="card">
+      <h3>Ejercicio Regular</h3>
+      <p>El ejercicio es fundamental para mantener niveles saludables de glucosa y mejorar tu calidad de vida.</p>
+    </div>
+  </section>
+
+  <section class="daily-routine">
+    <h2>Rutina Diaria</h2>
+    <div class="card">
+      <h3>Mañana</h3>
+      <ul>
+        <li>Medir niveles de glucosa en ayunas</li>
+        <li>Tomar medicamentos según prescripción</li>
+        <li>Desayuno equilibrado</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Tarde</h3>
+      <ul>
+        <li>Monitoreo pre y post almuerzo</li>
+        <li>30 minutos de actividad física</li>
+        <li>Merienda saludable</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Noche</h3>
+      <ul>
+        <li>Cena ligera</li>
+        <li>Último control de glucosa</li>
+        <li>Preparar suministros para el día siguiente</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="emergency-section">
+    <h2>Señales de Emergencia</h2>
+    <div class="card">
+      <h3>Hipoglucemia</h3>
+      <ul>
+        <li>Temblores</li>
+        <li>Sudoración excesiva</li>
+        <li>Confusión</li>
+        <li>Mareos</li>
+      </ul>
+      <h3>Hiperglucemia</h3>
+      <ul>
+        <li>Sed extrema</li>
+        <li>Visión borrosa</li>
+        <li>Fatiga</li>
+        <li>Necesidad frecuente de orinar</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="recipes">
+    <h2>Recetas Saludables</h2>
+    <div class="tips-grid">
+      <div class="card recipe-card">
+        <h3>Desayuno Equilibrado</h3>
+        <p>Avena con frutas bajas en azúcar y almendras</p>
+        <ul>
+          <li>1/2 taza de avena</li>
+          <li>Fresas picadas</li>
+          <li>Almendras fileteadas</li>
+          <li>Canela al gusto</li>
+        </ul>
+      </div>
+
+      <div class="card recipe-card">
+        <h3>Almuerzo Nutritivo</h3>
+        <p>Ensalada de quinoa con proteínas</p>
+        <ul>
+          <li>Quinoa cocida</li>
+          <li>Pechuga de pollo a la plancha</li>
+          <li>Aguacate</li>
+          <li>Verduras variadas</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="tracking">
+    <h2>Seguimiento de Progreso</h2>
+    <div class="progress-tracker">
+      <h3>Objetivos Semanales</h3>
+      <p>Ejercicio: 150 minutos</p>
+      <div class="progress-bar" style="width: 75%"></div>
+      <p>Lecturas de Glucosa: 28/28</p>
+      <div class="progress-bar" style="width: 100%"></div>
+    </div>
+  </section>
+
+  <section class="nutrition-guide">
+    <h2>Guía Completa de Alimentación</h2>
+    
+    <div class="tips-grid">
+      <div class="card">
+        <h3>Carbohidratos Inteligentes</h3>
+        <ul>
+          <li>Granos integrales</li>
+          <li>Quinoa y avena</li>
+          <li>Legumbres</li>
+          <li>Vegetales ricos en fibra</li>
+        </ul>
+        <p>Porción recomendada: 45-60g por comida principal</p>
+      </div>
+
+      <div class="card">
+        <h3>Proteínas Saludables</h3>
+        <ul>
+          <li>Pescado (especialmente salmón y sardinas)</li>
+          <li>Pechuga de pollo sin piel</li>
+          <li>Claras de huevo</li>
+          <li>Tofu y tempeh</li>
+        </ul>
+        <p>Porción recomendada: 20-30g por comida principal</p>
+      </div>
+
+      <div class="card">
+        <h3>Grasas Beneficiosas</h3>
+        <ul>
+          <li>Aguacate</li>
+          <li>Aceite de oliva extra virgen</li>
+          <li>Nueces y semillas</li>
+          <li>Pescados grasos</li>
+        </ul>
+        <p>Limitar a 2-3 cucharadas por comida</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Índice Glucémico</h3>
+      <p>Guía de alimentos según su índice glucémico:</p>
+      <ul>
+        <li>Bajo (55 o menos):
+          <ul>
+            <li>Verduras no feculentas</li>
+            <li>La mayoría de frutas</li>
+            <li>Legumbres</li>
+          </ul>
+        </li>
+        <li>Medio (56-69):
+          <ul>
+            <li>Pan integral</li>
+            <li>Arroz integral</li>
+            <li>Uvas</li>
+          </ul>
+        </li>
+        <li>Alto (70 o más):
+          <ul>
+            <li>Pan blanco</li>
+            <li>Arroz blanco</li>
+            <li>Papas cocidas</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Horarios de Alimentación</h3>
+      <p>Importancia de mantener un horario regular:</p>
+      <ul>
+        <li>Desayuno: 7:00-8:00</li>
+        <li>Merienda mañana: 10:30-11:00</li>
+        <li>Almuerzo: 13:00-14:00</li>
+        <li>Merienda tarde: 16:30-17:00</li>
+        <li>Cena: 19:00-20:00</li>
+      </ul>
+      <p>Mantener intervalos regulares ayuda a:</p>
+      <ul>
+        <li>Estabilizar niveles de glucosa</li>
+        <li>Mejorar la sensibilidad a la insulina</li>
+        <li>Prevenir hipoglucemias</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="lifestyle-tips">
+    <h2>Estilo de Vida Saludable</h2>
+    <div class="tips-grid">
+      <div class="card">
+        <h3>Manejo del Estrés</h3>
+        <p>El estrés puede afectar tus niveles de glucosa. Aprende técnicas de relajación:</p>
+        <ul>
+          <li>Meditación diaria</li>
+          <li>Yoga suave</li>
+          <li>Respiración consciente</li>
+          <li>Paseos en la naturaleza</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>Sueño Reparador</h3>
+        <p>La calidad del sueño es fundamental para el control de la diabetes:</p>
+        <ul>
+          <li>Mantén un horario regular</li>
+          <li>Crea una rutina nocturna</li>
+          <li>Evita pantallas antes de dormir</li>
+          <li>Ambiente tranquilo y fresco</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>¿Tienes Dudas?</h2>
+    <div class="card">
+      <p>Escríbenos a nuestro correo: <a href="mailto:vidacondiabetes20@gmail.com">vidacondiabetes20@gmail.com</a></p>
+    </div>
+  </section>
+
+  <section class="social-media">
+    <h2>Síguenos en Redes Sociales</h2>
+    <div class="social-links">
+      <a href="https://www.instagram.com/vida_con__diabetes?igsh=ODIzNDZoamRpcW40" target="_blank" class="social-link">
+        <svg class="social-icon" viewBox="0 0 24 24">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+        Instagram
+      </a>
+      <a href="https://x.com/Vida__Diabetes?t=dVFmIePlO7vPJwfAqCXl1A&s=09" target="_blank" class="social-link">
+        <svg class="social-icon" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        X
+      </a>
+      <a href="https://www.facebook.com/share/KuUppTL33rxWmruV/?mibextid=qi2Omg" target="_blank" class="social-link">
+        <svg class="social-icon" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+        Facebook
+      </a>
+      <a href="https://www.tiktok.com/@vida.con.diabetes?_t=8oJ3DY9Xo97&_r=1" target="_blank" class="social-link">
+        <svg class="social-icon" viewBox="0 0 24 24">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+        TikTok
+      </a>
+    </div>
+  </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    });
+
+    // Theme switcher
+    const toggleSwitch = document.querySelector('#checkbox');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+        }
+    }
+
+    function switchTheme(e) {
+        if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme, false);
+
+    function reveal() {
+        const reveals = document.querySelectorAll('section');
+        reveals.forEach(reveal => {
+            const windowHeight = window.innerHeight;
+            const elementTop = reveal.getBoundingClientRect().top;
+            const elementVisible = 150;
+            
+            if (elementTop < windowHeight - elementVisible) {
+                reveal.classList.add('active');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', reveal);
+    reveal();
+
+    function updateProgressBars() {
+        const progressBars = document.querySelectorAll('.progress-bar');
+        progressBars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 100);
+        });
+    }
+
+    updateProgressBars();
+});
+</script>
+
+</body></html>
